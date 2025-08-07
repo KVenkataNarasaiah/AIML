@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Smart Irrigation Control</title>
+</head>
+<body>
+  <h2>Motor Control Panel</h2>
+  <button onclick="controlMotor('on')">Turn ON Motor</button>
+  <button onclick="controlMotor('off')">Turn OFF Motor</button>
+  <p id="status">Loading motor status...</p>
+
+  <script>
+    function updateStatus() {
+      fetch('/motor/status')
+        .then(response => response.text())
+        .then(status => {
+          document.getElementById('status').innerText = "Motor is " + status.toUpperCase();
+        });
+    }
+
+    function controlMotor(state) {
+      fetch(`/motor/${state}`)
+        .then(response => response.text())
+        .then(data => {
+          alert(data);
+          updateStatus();
+        });
+    }
+
+    // Update status when page loads
+    window.onload = updateStatus;
+  </script>
+</body>
+</html>
